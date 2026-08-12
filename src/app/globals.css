@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-canvas: #f4f5f6;
+  --bg-surface: #ffffff;
+  --text-primary: #161616;
+  --text-secondary: #6b7280;
+  --border-subtle: #e5e7eb;
+  --accent: #c10000;
+}
+
+body {
+  color: var(--text-primary);
+  background: var(--bg-canvas);
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
