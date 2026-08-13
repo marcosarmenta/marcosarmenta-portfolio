@@ -9,12 +9,9 @@ import { XLogo } from "@phosphor-icons/react/dist/csr/XLogo";
 import { LinkedinLogo } from "@phosphor-icons/react/dist/csr/LinkedinLogo";
 import { DribbbleLogo } from "@phosphor-icons/react/dist/csr/DribbbleLogo";
 import { BehanceLogo } from "@phosphor-icons/react/dist/csr/BehanceLogo";
-import { useLenis } from "@/components/providers/SmoothScrollProvider";
+import { useAnchorScroll } from "@/lib/useAnchorScroll";
 import { LiveClock } from "@/components/nav/LiveClock";
 import type { SocialLinks } from "@/lib/sanity";
-
-// Reserve space above an anchor target so it doesn't land under the fixed nav.
-const SCROLL_OFFSET = -112;
 
 type NavLink =
   | { label: string; kind: "home" }
@@ -38,27 +35,8 @@ const SOCIAL_ICON_MAP = [
 
 export function StickyNav({ socialLinks }: { socialLinks?: SocialLinks }) {
   const pathname = usePathname();
-  const lenis = useLenis();
+  const { scrollToHash, scrollToTop } = useAnchorScroll();
   const [menuOpen, setMenuOpen] = useState(false);
-
-  const scrollToTop = () => {
-    if (lenis) {
-      lenis.scrollTo(0, { duration: 1.2 });
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
-
-  const scrollToHash = (hash: string) => {
-    const el = document.querySelector<HTMLElement>(hash);
-    if (!el) return false;
-    if (lenis) {
-      lenis.scrollTo(el, { offset: SCROLL_OFFSET, duration: 1.2 });
-    } else {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-    return true;
-  };
 
   const handleHomeClick = (e: MouseEvent) => {
     setMenuOpen(false);

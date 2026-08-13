@@ -65,6 +65,7 @@ export interface SiteSettings {
   roleTitles: string[];
   headline: string;
   subhead?: string;
+  bio?: string;
   headshot?: SanityImage;
   availabilityBadge?: string;
   email?: string;
@@ -128,6 +129,7 @@ const SITE_SETTINGS_QUERY = defineQuery(
     roleTitles,
     headline,
     subhead,
+    bio,
     headshot,
     availabilityBadge,
     email,

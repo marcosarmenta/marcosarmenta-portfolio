@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { MotionConfig } from "framer-motion";
 import { publicSans, jetbrainsMono } from "@/lib/fonts";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 import { StickyNav } from "@/components/nav/StickyNav";
@@ -23,11 +24,13 @@ export default async function RootLayout({
       <body
         className={`${publicSans.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
-        <SmoothScrollProvider>
-          <StickyNav socialLinks={siteSettings?.socialLinks} />
-          <main className="pt-32">{children}</main>
-          <Footer siteSettings={siteSettings} />
-        </SmoothScrollProvider>
+        <MotionConfig reducedMotion="user">
+          <SmoothScrollProvider>
+            <StickyNav socialLinks={siteSettings?.socialLinks} />
+            <main className="pt-32">{children}</main>
+            <Footer siteSettings={siteSettings} />
+          </SmoothScrollProvider>
+        </MotionConfig>
       </body>
     </html>
   );
