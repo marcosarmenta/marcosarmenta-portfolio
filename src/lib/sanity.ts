@@ -158,18 +158,22 @@ const PROJECT_BY_SLUG_QUERY = defineQuery(
 // Typed fetch helpers
 // ---------------------------------------------------------------------------
 
+// Revalidate every 30s so Studio edits show up without a redeploy — without
+// this, Next's fetch cache serves the first render's data indefinitely.
+const FETCH_OPTIONS = { next: { revalidate: 30 } };
+
 export async function getSiteSettings(): Promise<SiteSettings | null> {
-  return client.fetch<SiteSettings | null>(SITE_SETTINGS_QUERY);
+  return client.fetch<SiteSettings | null>(SITE_SETTINGS_QUERY, {}, FETCH_OPTIONS);
 }
 
 export async function getAllProjects(): Promise<Project[]> {
-  return client.fetch<Project[]>(ALL_PROJECTS_QUERY);
+  return client.fetch<Project[]>(ALL_PROJECTS_QUERY, {}, FETCH_OPTIONS);
 }
 
 export async function getFeaturedProjects(): Promise<Project[]> {
-  return client.fetch<Project[]>(FEATURED_PROJECTS_QUERY);
+  return client.fetch<Project[]>(FEATURED_PROJECTS_QUERY, {}, FETCH_OPTIONS);
 }
 
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
-  return client.fetch<Project | null>(PROJECT_BY_SLUG_QUERY, { slug });
+  return client.fetch<Project | null>(PROJECT_BY_SLUG_QUERY, { slug }, FETCH_OPTIONS);
 }
