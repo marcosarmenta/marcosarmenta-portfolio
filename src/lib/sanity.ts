@@ -1,4 +1,5 @@
 import { createClient, defineQuery } from "next-sanity";
+import type { PortableTextBlock } from "next-sanity";
 import imageUrlBuilder, { type SanityImageSource } from "@sanity/image-url";
 
 export const client = createClient({
@@ -14,6 +15,13 @@ export function urlFor(source: SanityImageSource) {
   return builder.image(source);
 }
 
+// Sanity file assets aren't covered by the image CDN builder — their URL is
+// derived from the asset ref directly: file-<id>-<ext>.
+export function fileUrl(file: { asset: { _ref: string } }): string {
+  const [, id, ext] = file.asset._ref.split("-");
+  return `https://cdn.sanity.io/files/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/${process.env.NEXT_PUBLIC_SANITY_DATASET}/${id}.${ext}`;
+}
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
@@ -25,12 +33,6 @@ export interface SanityImage {
 
 export interface SanityFile {
   asset: { _ref: string; _type: "reference" };
-}
-
-export interface Stat {
-  _key: string;
-  value: string;
-  label: string;
 }
 
 export interface Service {
@@ -65,12 +67,11 @@ export interface SiteSettings {
   roleTitles: string[];
   headline: string;
   subhead?: string;
-  bio?: string;
+  bio?: PortableTextBlock[];
   headshot?: SanityImage;
   availabilityBadge?: string;
   email?: string;
   resumeFile?: SanityFile;
-  stats: Stat[];
   services: Service[];
   faq: FaqItem[];
   logos: Logo[];
@@ -134,7 +135,6 @@ const SITE_SETTINGS_QUERY = defineQuery(
     availabilityBadge,
     email,
     resumeFile,
-    stats,
     services,
     faq,
     logos,

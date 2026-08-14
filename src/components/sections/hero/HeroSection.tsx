@@ -1,10 +1,8 @@
 import Image from "next/image";
 import { getSiteSettings, urlFor } from "@/lib/sanity";
-import { SectionFadeMask } from "@/components/layout/SectionFadeMask";
+import { SectionShell } from "@/components/layout/SectionShell";
 import { RoleRotator } from "./RoleRotator";
 import { LogoMarquee } from "./LogoMarquee";
-import { HeadlineReveal } from "./HeadlineReveal";
-import { DecorativeGrid } from "./DecorativeGrid";
 import { HeroCTAs } from "./HeroCTAs";
 
 export async function HeroSection() {
@@ -17,62 +15,74 @@ export async function HeroSection() {
     .toUpperCase();
 
   return (
-    <section id="hero" className="relative overflow-hidden px-6 pb-32 md:px-8">
-      <DecorativeGrid />
-
-      <div className="relative mx-auto flex w-full max-w-content flex-col items-center gap-8 text-center">
-        <div className="h-[120px] w-[120px] overflow-hidden rounded-full border border-border-subtle bg-bg-surface md:h-[160px] md:w-[160px]">
-          {siteSettings?.headshot ? (
-            <Image
-              src={urlFor(siteSettings.headshot).width(320).height(320).url()}
-              alt={siteSettings.name}
-              width={320}
-              height={320}
-              className="h-full w-full object-cover"
-              priority
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center font-mono text-h2 text-text-secondary">
-              {initials}
-            </div>
-          )}
-        </div>
-
-        {siteSettings?.roleTitles && siteSettings.roleTitles.length > 0 && (
-          <div className="inline-flex items-center gap-2 rounded-lg border border-border-subtle bg-bg-surface/70 px-4 py-2 font-mono text-small text-text-secondary">
-            <span>Currently:</span>
-            <RoleRotator titles={siteSettings.roleTitles} />
-          </div>
-        )}
-
-        {siteSettings?.headline && (
-          <HeadlineReveal
-            text={siteSettings.headline}
-            className="text-balance max-w-3xl text-display text-text-primary"
-          />
-        )}
-
-        {siteSettings?.subhead && (
-          <p className="max-w-xl text-body-lg text-text-secondary">{siteSettings.subhead}</p>
-        )}
-
+    <SectionShell id="hero" className="px-6 pb-8 pt-6 md:px-8">
+      <div className="relative overflow-hidden rounded-xl bg-bg-surface pl-6 pr-6 sm:pl-12">
         {siteSettings?.availabilityBadge && (
-          <span className="inline-flex items-center gap-2 rounded-lg border border-border-subtle px-4 py-2 font-mono text-small text-text-secondary">
-            <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-accent" />
+          <span className="absolute right-6 top-6 inline-flex items-center gap-2.5 whitespace-nowrap rounded-[50px] bg-[#e7f8e2] px-3 py-1.5 text-[12px] text-[#42b91d]">
+            <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#42b91d]" />
             {siteSettings.availabilityBadge}
           </span>
         )}
 
-        <HeroCTAs />
+        <div className="flex flex-col items-start gap-7 py-11">
+          <div className="flex items-center gap-5">
+            <div className="h-[88px] w-[88px] shrink-0 overflow-hidden rounded-full border border-border-subtle bg-bg-canvas">
+              {siteSettings?.headshot ? (
+                <Image
+                  src={urlFor(siteSettings.headshot).width(176).height(176).url()}
+                  alt={siteSettings.name}
+                  width={176}
+                  height={176}
+                  className="h-full w-full object-cover"
+                  priority
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center font-mono text-body text-text-secondary">
+                  {initials}
+                </div>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-0.5">
+              <p className="text-[20px] font-semibold text-text-primary">
+                {siteSettings?.name ?? "Marcos Armenta"}
+              </p>
+              {siteSettings?.roleTitles && siteSettings.roleTitles.length > 0 && (
+                <div className="text-[14px] text-text-secondary">
+                  <RoleRotator
+                    titles={siteSettings.roleTitles}
+                    className="font-normal text-text-secondary"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="flex flex-col items-start gap-7">
+            <div className="flex flex-col gap-3">
+              {siteSettings?.headline && (
+                <p className="max-w-xl text-[32px] font-semibold leading-[1.15] tracking-[-0.96px] text-text-primary">
+                  {siteSettings.headline}
+                </p>
+              )}
+              {siteSettings?.subhead && (
+                <p className="max-w-lg text-body text-text-secondary">{siteSettings.subhead}</p>
+              )}
+            </div>
+
+            <HeroCTAs />
+          </div>
+        </div>
 
         {siteSettings?.logos && siteSettings.logos.length > 0 && (
-          <div className="w-full pt-12">
+          <div className="flex flex-col gap-3 pb-11">
+            <p className="text-body font-medium text-text-primary">
+              Trusted by 200+ Brands including:
+            </p>
             <LogoMarquee logos={siteSettings.logos} />
           </div>
         )}
       </div>
-
-      <SectionFadeMask />
-    </section>
+    </SectionShell>
   );
 }

@@ -4,13 +4,16 @@ import { CaseStudiesBentoGrid } from "@/components/sections/CaseStudiesBentoGrid
 import { ServicesSection } from "@/components/sections/ServicesSection";
 import { FAQAccordion } from "@/components/sections/FAQAccordion";
 import { ContactSection } from "@/components/sections/ContactSection";
+import { SectionShell } from "@/components/layout/SectionShell";
 
 export default function HomePage() {
   return (
     <>
       <HeroSection />
-      <AboutSection />
-      <CaseStudiesBentoGrid />
+      <SectionShell className="flex flex-col items-center gap-10 px-0.5 py-0.5">
+        <AboutSection />
+        <CaseStudiesBentoGrid />
+      </SectionShell>
       <ServicesSection />
       <FAQAccordion />
       <ContactSection />

@@ -40,7 +40,7 @@ const config: Config = {
         xl: "22px",
       },
       maxWidth: {
-        content: "1200px",
+        content: "760px",
       },
       gridTemplateColumns: {
         "12": "repeat(12, minmax(0, 1fr))",

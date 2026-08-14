@@ -13,12 +13,12 @@ export function HeroCTAs() {
   };
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-      <MagneticButton href="#work" variant="primary" onClick={handleClick("#work")}>
-        View My Work
+    <div className="flex flex-wrap items-center gap-3">
+      <MagneticButton href="#contact" variant="primary" onClick={handleClick("#contact")}>
+        Book a Free Call
       </MagneticButton>
-      <MagneticButton href="#contact" variant="secondary" onClick={handleClick("#contact")}>
-        Get in Touch
+      <MagneticButton href="#work" variant="secondary" onClick={handleClick("#work")}>
+        See My Projects
       </MagneticButton>
     </div>
   );

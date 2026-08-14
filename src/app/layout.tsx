@@ -27,7 +27,7 @@ export default async function RootLayout({
         <MotionConfig reducedMotion="user">
           <SmoothScrollProvider>
             <StickyNav socialLinks={siteSettings?.socialLinks} />
-            <main className="pt-32">{children}</main>
+            <main className="pt-6">{children}</main>
             <Footer siteSettings={siteSettings} />
           </SmoothScrollProvider>
         </MotionConfig>

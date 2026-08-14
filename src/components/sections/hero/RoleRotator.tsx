@@ -4,7 +4,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { EASE_OUT } from "@/lib/motion";
 
-export function RoleRotator({ titles }: { titles: string[] }) {
+export function RoleRotator({
+  titles,
+  className = "font-medium text-accent",
+}: {
+  titles: string[];
+  className?: string;
+}) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -26,7 +32,7 @@ export function RoleRotator({ titles }: { titles: string[] }) {
           animate={{ y: "0%", opacity: 1 }}
           exit={{ y: "-100%", opacity: 0 }}
           transition={{ duration: 0.45, ease: EASE_OUT }}
-          className="inline-block font-medium text-accent"
+          className={`inline-block ${className}`}
         >
           {current}
         </motion.span>

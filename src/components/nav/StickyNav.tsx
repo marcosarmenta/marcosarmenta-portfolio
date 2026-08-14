@@ -1,14 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, type MouseEvent } from "react";
 import { ListIcon } from "@phosphor-icons/react/dist/csr/List";
 import { XIcon } from "@phosphor-icons/react/dist/csr/X";
-import { XLogo } from "@phosphor-icons/react/dist/csr/XLogo";
-import { LinkedinLogo } from "@phosphor-icons/react/dist/csr/LinkedinLogo";
-import { DribbbleLogo } from "@phosphor-icons/react/dist/csr/DribbbleLogo";
-import { BehanceLogo } from "@phosphor-icons/react/dist/csr/BehanceLogo";
 import { useAnchorScroll } from "@/lib/useAnchorScroll";
 import { LiveClock } from "@/components/nav/LiveClock";
 import type { SocialLinks } from "@/lib/sanity";
@@ -27,10 +24,10 @@ const NAV_LINKS: NavLink[] = [
 ];
 
 const SOCIAL_ICON_MAP = [
-  { key: "x", Icon: XLogo, label: "X (Twitter)" },
-  { key: "linkedin", Icon: LinkedinLogo, label: "LinkedIn" },
-  { key: "dribbble", Icon: DribbbleLogo, label: "Dribbble" },
-  { key: "behance", Icon: BehanceLogo, label: "Behance" },
+  { key: "x", src: "/images/icons/social-x.svg", label: "X (Twitter)" },
+  { key: "linkedin", src: "/images/icons/social-linkedin.svg", label: "LinkedIn" },
+  { key: "dribbble", src: "/images/icons/social-dribbble.svg", label: "Dribbble" },
+  { key: "behance", src: "/images/icons/social-behance.svg", label: "Behance" },
 ] as const;
 
 export function StickyNav({ socialLinks }: { socialLinks?: SocialLinks }) {
@@ -51,9 +48,9 @@ export function StickyNav({ socialLinks }: { socialLinks?: SocialLinks }) {
     if (scrollToHash(hash)) e.preventDefault();
   };
 
-  const socials = SOCIAL_ICON_MAP.map(({ key, Icon, label }) => ({
+  const socials = SOCIAL_ICON_MAP.map(({ key, src, label }) => ({
     key,
-    Icon,
+    src,
     label,
     href: socialLinks?.[key],
   })).filter((s): s is typeof s & { href: string } => Boolean(s.href));
@@ -91,82 +88,66 @@ export function StickyNav({ socialLinks }: { socialLinks?: SocialLinks }) {
   };
 
   return (
-    <header className="fixed inset-x-0 top-6 z-50 px-6 md:px-8">
-      <div className="mx-auto flex w-full max-w-content items-center justify-between gap-6 rounded-lg border border-border-subtle/60 bg-bg-surface/70 px-6 py-4 backdrop-blur-xl">
-        <Link
-          href="/"
-          onClick={handleHomeClick}
-          className="text-body font-medium text-text-primary"
-        >
-          Marcos Armenta
-        </Link>
+    <header className="sticky top-6 z-50 mx-auto w-fit max-w-[calc(100%-3rem)]">
+      <div className="flex items-center justify-center gap-10 rounded-[10px] bg-[rgba(244,245,246,0.2)] px-5 py-[18px] backdrop-blur-xl">
+        <LiveClock />
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-5 md:flex">
           {NAV_LINKS.map((link) =>
-            renderLink(
-              link,
-              "text-small font-medium text-text-primary transition-colors hover:text-accent"
-            )
+            renderLink(link, "whitespace-nowrap text-[14px] font-semibold text-text-primary transition-colors hover:text-accent")
           )}
         </nav>
 
-        <div className="hidden items-center gap-6 lg:flex">
-          <LiveClock />
-          {socials.length > 0 && (
-            <div className="flex items-center gap-4 border-l border-border-subtle pl-6">
-              {socials.map(({ key, Icon, label, href }) => (
-                <a
-                  key={key}
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  aria-label={label}
-                  className="text-text-secondary transition-colors hover:text-accent"
-                >
-                  <Icon size={18} weight="regular" />
-                </a>
-              ))}
-            </div>
-          )}
+        <div className="hidden items-center gap-2 lg:flex">
+          {socials.map(({ key, src, label, href }) => (
+            <a
+              key={key}
+              href={href}
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label={label}
+              className="transition-opacity hover:opacity-70"
+            >
+              <Image src={src} alt="" width={32} height={32} />
+            </a>
+          ))}
         </div>
 
         <button
           type="button"
-          className="flex h-9 w-9 items-center justify-center rounded-sm text-text-primary md:hidden"
+          className="flex h-8 w-8 items-center justify-center text-text-primary md:hidden"
           onClick={() => setMenuOpen((v) => !v)}
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           aria-expanded={menuOpen}
         >
-          {menuOpen ? <XIcon size={22} /> : <ListIcon size={22} />}
+          {menuOpen ? <XIcon size={20} /> : <ListIcon size={20} />}
         </button>
       </div>
 
       {menuOpen && (
-        <div className="mx-auto mt-2 w-full max-w-content rounded-lg border border-border-subtle/60 bg-bg-surface/95 p-6 backdrop-blur-xl md:hidden">
+        <div className="mt-2 w-64 rounded-[10px] bg-[rgba(244,245,246,0.9)] p-6 backdrop-blur-xl md:hidden">
           <nav className="flex flex-col gap-4">
-            {NAV_LINKS.map((link) => renderLink(link, "text-body font-medium text-text-primary"))}
+            {NAV_LINKS.map((link) =>
+              renderLink(link, "text-[14px] font-semibold text-text-primary")
+            )}
           </nav>
 
           {socials.length > 0 && (
-            <div className="mt-6 flex items-center gap-5 border-t border-border-subtle pt-6">
-              {socials.map(({ key, Icon, label, href }) => (
+            <div className="mt-6 flex items-center gap-3 border-t border-border-subtle pt-6">
+              {socials.map(({ key, src, label, href }) => (
                 <a
                   key={key}
                   href={href}
                   target="_blank"
                   rel="noreferrer noopener"
                   aria-label={label}
-                  className="text-text-secondary transition-colors hover:text-accent"
+                  className="transition-opacity hover:opacity-70"
                 >
-                  <Icon size={20} />
+                  <Image src={src} alt="" width={28} height={28} />
                 </a>
               ))}
             </div>
           )}
-
-          <div className="mt-6">
-            <LiveClock />
-          </div>
         </div>
       )}
     </header>

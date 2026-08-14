@@ -1,28 +1,73 @@
-import { getSiteSettings } from "@/lib/sanity";
+import Image from "next/image";
+import { PortableText, type PortableTextComponents } from "next-sanity";
+import { getSiteSettings, fileUrl } from "@/lib/sanity";
 import { Reveal } from "@/components/motion/Reveal";
-import { SectionFadeMask } from "@/components/layout/SectionFadeMask";
-import { StatBlock } from "./StatBlock";
+
+const bioComponents: PortableTextComponents = {
+  block: {
+    normal: ({ children }) => (
+      <p className="max-w-xl text-[18px] leading-[27px] tracking-[-0.54px] text-text-secondary">
+        {children}
+      </p>
+    ),
+  },
+  marks: {
+    strong: ({ children }) => (
+      <strong className="font-semibold text-text-primary">{children}</strong>
+    ),
+  },
+};
 
 export async function AboutSection() {
   const siteSettings = await getSiteSettings();
 
   return (
-    <section id="about" className="relative px-6 py-24 md:px-8 md:py-32">
-      <div className="mx-auto flex w-full max-w-content flex-col gap-16 md:flex-row md:items-start md:justify-between">
-        <Reveal className="max-w-2xl flex-1">
-          <p className="font-mono text-small uppercase tracking-wide text-text-secondary">About</p>
-          <p className="mt-6 text-body-lg text-text-primary">
-            {siteSettings?.bio ?? "Bio coming soon."}
-          </p>
-        </Reveal>
+    <div id="about" className="rounded-xl bg-bg-surface pb-6 pl-6 pr-6 sm:pl-12">
+      <Reveal className="flex flex-col items-start gap-7 py-11">
+        <p className="text-body text-text-secondary">About Myself</p>
 
-        {siteSettings?.stats && siteSettings.stats.length > 0 && (
-          <Reveal delay={0.15} className="w-full md:w-auto">
-            <StatBlock stats={siteSettings.stats} />
-          </Reveal>
+        {siteSettings?.bio && siteSettings.bio.length > 0 ? (
+          <PortableText value={siteSettings.bio} components={bioComponents} />
+        ) : (
+          <p className="max-w-xl text-body-lg text-text-secondary">Bio coming soon.</p>
         )}
-      </div>
-      <SectionFadeMask />
-    </section>
+
+        {(siteSettings?.email || siteSettings?.resumeFile) && (
+          <div className="flex flex-wrap items-center gap-4">
+            {siteSettings.email && (
+              <a
+                href={`mailto:${siteSettings.email}`}
+                className="flex items-center gap-2.5 text-[14px] text-text-primary"
+              >
+                <Image src="/images/icons/email.svg" alt="" width={16} height={12} />
+                {siteSettings.email}
+              </a>
+            )}
+
+            {siteSettings.email && siteSettings.resumeFile && (
+              <Image
+                src="/images/icons/dot-separator.svg"
+                alt=""
+                width={6}
+                height={6}
+                aria-hidden
+              />
+            )}
+
+            {siteSettings.resumeFile && (
+              <a
+                href={fileUrl(siteSettings.resumeFile)}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="flex items-center gap-2.5 text-[14px] text-text-primary"
+              >
+                <Image src="/images/icons/download.svg" alt="" width={16} height={16} />
+                Download Resume
+              </a>
+            )}
+          </div>
+        )}
+      </Reveal>
+    </div>
   );
 }

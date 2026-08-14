@@ -2,19 +2,16 @@ import Link from "next/link";
 import Image from "next/image";
 import { urlFor, type Project } from "@/lib/sanity";
 
-export function CaseStudyCard({ project, large = false }: { project: Project; large?: boolean }) {
+export function CaseStudyCard({ project }: { project: Project }) {
   return (
-    <Link
-      href={`/work/${project.slug}`}
-      className="group relative flex h-full min-h-[220px] flex-col overflow-hidden rounded-xl border border-border-subtle bg-bg-surface"
-    >
-      <div className="relative flex-1 overflow-hidden bg-border-subtle/40">
+    <Link href={`/work/${project.slug}`} className="group flex flex-col gap-4">
+      <div className="relative aspect-[5/4] w-full overflow-hidden rounded-[12px] bg-border-subtle/40">
         {project.heroImage ? (
           <Image
-            src={urlFor(project.heroImage).width(1200).height(900).url()}
+            src={urlFor(project.heroImage).width(1200).height(960).url()}
             alt={project.title}
             fill
-            sizes={large ? "(min-width: 768px) 50vw, 100vw" : "(min-width: 768px) 25vw, 100vw"}
+            sizes="(min-width: 640px) 50vw, 100vw"
             className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           />
         ) : (
@@ -23,11 +20,11 @@ export function CaseStudyCard({ project, large = false }: { project: Project; la
           </div>
         )}
       </div>
-      <div className="flex flex-col gap-1 p-6">
+      <div className="flex flex-col gap-0.5">
         {project.category && (
-          <p className="font-mono text-small text-text-secondary">{project.category}</p>
+          <p className="text-[12px] tracking-[-0.12px] text-text-secondary">{project.category}</p>
         )}
-        <h3 className={large ? "text-h1 text-text-primary" : "text-h2 text-text-primary"}>
+        <h3 className="text-[16px] font-medium tracking-[-0.16px] text-text-primary">
           {project.title}
         </h3>
       </div>

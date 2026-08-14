@@ -40,12 +40,12 @@ export function MagneticButton({
     y.set(0);
   };
 
-  const base =
-    "inline-flex items-center justify-center rounded-lg px-8 py-4 text-small font-medium transition-colors";
-  const styles =
+  const shellBg = variant === "primary" ? "bg-text-primary" : "bg-border-subtle";
+  const innerGradient =
     variant === "primary"
-      ? "bg-text-primary text-bg-canvas hover:bg-accent"
-      : "border border-border-subtle text-text-primary hover:border-text-primary";
+      ? "bg-gradient-to-b from-text-primary to-[#404040]"
+      : "bg-gradient-to-b from-bg-canvas to-bg-surface";
+  const textColor = variant === "primary" ? "text-white" : "text-text-secondary";
 
   return (
     <MotionLink
@@ -54,9 +54,17 @@ export function MagneticButton({
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ x: springX, y: springY }}
-      className={`${base} ${styles} ${className}`}
+      className={`inline-flex shrink-0 overflow-hidden rounded-sm p-px ${shellBg} ${className}`}
     >
-      {children}
+      <span
+        className={`relative flex w-full items-center justify-center whitespace-nowrap rounded-sm px-5 py-[14px] text-[14px] font-medium tracking-[-0.14px] ${innerGradient} ${textColor}`}
+      >
+        {children}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 rounded-[inherit] shadow-[inset_0px_-4px_4px_0px_rgba(255,255,255,0.2),inset_0px_4px_4px_0px_rgba(255,255,255,0.2)]"
+        />
+      </span>
     </MotionLink>
   );
 }

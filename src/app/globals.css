@@ -35,50 +35,6 @@ body {
   animation: marquee 32s linear infinite;
 }
 
-@keyframes steam-rise {
-  0% {
-    opacity: 0;
-    transform: translateY(0) scaleY(0.6);
-  }
-  30% {
-    opacity: 0.6;
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-10px) scaleY(1);
-  }
-}
-
-.bento-grid {
-  display: grid;
-  gap: 24px;
-  grid-template-columns: 1fr;
-}
-
-@media (min-width: 768px) {
-  .bento-grid {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(3, minmax(0, 1fr));
-    grid-template-areas:
-      "large small1"
-      "large small2"
-      "large small3";
-  }
-}
-
-.bento-large {
-  grid-area: large;
-}
-.bento-small-1 {
-  grid-area: small1;
-}
-.bento-small-2 {
-  grid-area: small2;
-}
-.bento-small-3 {
-  grid-area: small3;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee {
     animation: none;
