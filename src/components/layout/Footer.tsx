@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { SiteSettings } from "@/lib/sanity";
 import { LiveClock } from "@/components/nav/LiveClock";
 import { FooterStartProjectLink } from "./FooterStartProjectLink";
+import { StarMark } from "@/components/ui/StarMark";
 
 const SOCIAL_ICON_MAP = [
   { key: "x", src: "/images/icons/x.svg", label: "X (Twitter)", width: 12, height: 13 },
@@ -39,7 +40,10 @@ export function Footer({ siteSettings }: { siteSettings: SiteSettings | null }) 
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-[1.2fr_1fr_1fr]">
           {/* Brand + live status */}
           <div className="flex flex-col gap-3">
-            <p className="text-[16px] font-medium text-text-primary">{name}</p>
+            <p className="flex items-center gap-2 text-[16px] font-medium text-text-primary">
+              <StarMark size={11} />
+              {name}
+            </p>
             {roles && <p className="max-w-[240px] text-text-secondary">{roles}</p>}
             <div className="pt-1">
               <LiveClock />

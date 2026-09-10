@@ -4,6 +4,7 @@ import { SectionShell } from "@/components/layout/SectionShell";
 import { RoleRotator } from "./RoleRotator";
 import { LogoMarquee } from "./LogoMarquee";
 import { HeroCTAs } from "./HeroCTAs";
+import { StarMark } from "@/components/ui/StarMark";
 
 export async function HeroSection() {
   const siteSettings = await getSiteSettings();
@@ -13,6 +14,10 @@ export async function HeroSection() {
     .join("")
     .slice(0, 2)
     .toUpperCase();
+
+  const fullName = siteSettings?.name ?? "Marcos Armenta";
+  const [nameFirst, ...nameRestParts] = fullName.split(/\s+/);
+  const nameRest = nameRestParts.join(" ");
 
   // The headline's final word carries the one accent moment in the hero, so
   // it's split off here rather than marked up in the CMS.
@@ -50,8 +55,14 @@ export async function HeroSection() {
             </div>
 
             <div className="flex flex-col gap-0.5">
-              <p className="text-[20px] font-semibold text-text-primary">
-                {siteSettings?.name ?? "Marcos Armenta"}
+              <p className="flex items-center gap-2 text-[20px] font-semibold text-text-primary">
+                <span>{nameFirst}</span>
+                {nameRest && (
+                  <>
+                    <StarMark size={11} />
+                    <span>{nameRest}</span>
+                  </>
+                )}
               </p>
               {siteSettings?.roleTitles && siteSettings.roleTitles.length > 0 && (
                 <div className="text-[14px] text-text-secondary">

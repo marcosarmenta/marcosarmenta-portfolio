@@ -3,6 +3,7 @@ import type { PortableTextBlock } from "next-sanity";
 import { getSiteSettings, fileUrl } from "@/lib/sanity";
 import { Reveal } from "@/components/motion/Reveal";
 import { ScrollColorText, type TextRun } from "@/components/sections/ScrollColorText";
+import { StarMark } from "@/components/ui/StarMark";
 
 interface BioSpan {
   _type: "span";
@@ -31,7 +32,10 @@ export async function AboutSection() {
   return (
     <div id="about" className="w-full rounded-xl bg-bg-surface pb-6 pl-6 pr-6 sm:pl-12">
       <Reveal className="flex flex-col items-start gap-7 py-11">
-        <p className="text-body text-text-secondary">About Myself</p>
+        <p className="flex items-center gap-2 text-body text-text-secondary">
+          <StarMark />
+          About Myself
+        </p>
 
         {siteSettings?.bio && siteSettings.bio.length > 0 ? (
           <ScrollColorText

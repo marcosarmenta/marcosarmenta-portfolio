@@ -3,6 +3,7 @@ import { getAllProjects } from "@/lib/sanity";
 import { Reveal } from "@/components/motion/Reveal";
 import { CaseStudyCard } from "@/components/sections/CaseStudyCard";
 import { WorkProjectGrid } from "@/components/sections/WorkProjectGrid";
+import { StarMark } from "@/components/ui/StarMark";
 
 export const metadata: Metadata = {
   title: "Work | Marcos Armenta",
@@ -25,7 +26,10 @@ export default async function WorkIndexPage() {
     <div className="px-6 py-24 md:px-8 md:py-32">
       <div className="mx-auto w-full max-w-content">
         <div className="mb-12 flex flex-col gap-3">
-          <p className="font-mono text-small uppercase tracking-wide text-text-secondary">Work</p>
+          <p className="flex items-center gap-2 font-mono text-small uppercase tracking-wide text-text-secondary">
+            <StarMark />
+            Work
+          </p>
           <h1 className="text-h1 text-text-primary">All Projects</h1>
         </div>
 
