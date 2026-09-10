@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, type MouseEvent } from "react";
 import { ListIcon } from "@phosphor-icons/react/dist/csr/List";
 import { XIcon } from "@phosphor-icons/react/dist/csr/X";
 import { useAnchorScroll } from "@/lib/useAnchorScroll";
-import { LiveClock } from "@/components/nav/LiveClock";
 import { MagneticButton } from "@/components/ui/MagneticButton";
 import { useBookingModal } from "@/components/booking/BookingModalProvider";
 
@@ -81,32 +81,48 @@ export function StickyNav() {
 
   return (
     <header className="sticky top-6 z-50 px-6 md:px-8">
-      <div className="mx-auto flex w-full max-w-content items-center justify-center gap-10 rounded-[10px] bg-[rgba(244,245,246,0.2)] px-5 py-[18px] backdrop-blur-xl">
-        <LiveClock />
-
-        <nav className="hidden items-center gap-5 md:flex">
-          {NAV_LINKS.map((link) =>
-            renderLink(link, "whitespace-nowrap text-[14px] font-semibold text-text-primary transition-colors hover:text-accent")
-          )}
-        </nav>
-
-        <MagneticButton
-          variant="primary"
-          onClick={handleStartProject}
-          className="hidden lg:inline-flex"
+      <div className="mx-auto flex w-full max-w-content items-center justify-between gap-10 rounded-[10px] bg-[rgba(244,245,246,0.2)] px-5 py-[18px] backdrop-blur-xl">
+        <Link
+          href="/"
+          onClick={handleHomeClick}
+          aria-label="Marcos Armenta — Home"
+          className="shrink-0"
         >
-          Start a Project
-        </MagneticButton>
+          <Image
+            src="/images/brand_mark.svg"
+            alt=""
+            width={32}
+            height={32}
+            unoptimized
+            className="h-8 w-8"
+          />
+        </Link>
 
-        <button
-          type="button"
-          className="flex h-8 w-8 items-center justify-center text-text-primary md:hidden"
-          onClick={() => setMenuOpen((v) => !v)}
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
-          aria-expanded={menuOpen}
-        >
-          {menuOpen ? <XIcon size={20} /> : <ListIcon size={20} />}
-        </button>
+        <div className="flex items-center gap-10">
+          <nav className="hidden items-center gap-5 md:flex">
+            {NAV_LINKS.map((link) =>
+              renderLink(link, "whitespace-nowrap text-[14px] font-semibold text-text-primary transition-colors hover:text-accent")
+            )}
+          </nav>
+
+          <MagneticButton
+            variant="primary"
+            onClick={handleStartProject}
+            className="hidden lg:inline-flex"
+          >
+            Start a Project
+          </MagneticButton>
+
+          <button
+            type="button"
+            className="flex h-8 w-8 items-center justify-center text-text-primary md:hidden"
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+          >
+            {menuOpen ? <XIcon size={20} /> : <ListIcon size={20} />}
+          </button>
+        </div>
       </div>
 
       {menuOpen && (
