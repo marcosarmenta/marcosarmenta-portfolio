@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { PortableTextBlock } from "next-sanity";
+import { DownloadSimpleIcon } from "@phosphor-icons/react/dist/ssr/DownloadSimple";
 import { getSiteSettings, fileUrl } from "@/lib/sanity";
 import { Reveal } from "@/components/motion/Reveal";
 import { ScrollColorText, type TextRun } from "@/components/sections/ScrollColorText";
@@ -59,16 +60,7 @@ export async function AboutSection() {
               </a>
             )}
 
-            {siteSettings.email && siteSettings.resumeFile && (
-              <Image
-                src="/images/icons/dot-separator.svg"
-                alt=""
-                width={6}
-                height={6}
-                unoptimized
-                aria-hidden
-              />
-            )}
+            {siteSettings.email && siteSettings.resumeFile && <StarMark size={10} />}
 
             {siteSettings.resumeFile && (
               <a
@@ -77,7 +69,7 @@ export async function AboutSection() {
                 rel="noreferrer noopener"
                 className="flex items-center gap-2.5 text-[14px] text-text-primary"
               >
-                <Image src="/images/icons/download.svg" alt="" width={16} height={16} unoptimized />
+                <DownloadSimpleIcon size={16} />
                 Download Resume
               </a>
             )}
