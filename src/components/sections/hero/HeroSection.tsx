@@ -78,7 +78,7 @@ export async function HeroSection() {
           <div className="flex flex-col items-start gap-7">
             <div className="flex flex-col gap-3">
               {headlineLastWord && (
-                <p className="max-w-xl text-[32px] font-semibold leading-[1.15] tracking-[-0.96px] text-text-primary">
+                <p className="max-w-xl text-h1 font-semibold tracking-[-1.2px] text-text-primary">
                   {headlineLead && `${headlineLead} `}
                   <span className="relative inline-block whitespace-nowrap">
                     {headlineLastWord}
