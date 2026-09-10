@@ -40,14 +40,17 @@ export function MagneticButton({
     y.set(0);
   };
 
-  const shellBg = variant === "primary" ? "bg-accent" : "bg-border-subtle";
+  const shellBg =
+    variant === "primary"
+      ? "bg-text-primary transition-colors duration-300 hover:bg-accent"
+      : "bg-border-subtle";
   const innerGradient =
     variant === "primary"
-      ? "bg-gradient-to-b from-accent to-[#8A0000]"
+      ? "bg-gradient-to-b from-text-primary to-[#404040] transition-colors duration-300 group-hover:from-accent group-hover:to-[#8A0000]"
       : "bg-gradient-to-b from-bg-canvas to-bg-surface";
   const textColor = variant === "primary" ? "text-white" : "text-text-secondary";
 
-  const shellClassName = `inline-flex shrink-0 overflow-hidden rounded-sm p-px ${shellBg} ${className}`;
+  const shellClassName = `group inline-flex shrink-0 overflow-hidden rounded-sm p-px ${shellBg} ${className}`;
   const innerContent = (
     <span
       className={`relative flex w-full items-center justify-center whitespace-nowrap rounded-sm px-5 py-[14px] text-[14px] font-medium tracking-[-0.14px] ${innerGradient} ${textColor}`}
