@@ -9,19 +9,29 @@ import type { Project } from "@/lib/sanity";
 // the 2-column layout below the full-width featured project.
 const PAGE_SIZE = 2;
 
-export function WorkProjectGrid({ projects }: { projects: Project[] }) {
-  const [visibleCount, setVisibleCount] = useState(Math.min(PAGE_SIZE, projects.length));
+export function WorkProjectGrid({
+  projects,
+  trailingFeatured,
+}: {
+  projects: Project[];
+  trailingFeatured?: Project;
+}) {
+  // The trailing featured card (shown when an odd project count would
+  // otherwise leave a dangling grid row) is treated as one extra item at
+  // the end of the same reveal sequence, not a separate scroll trigger.
+  const totalCount = projects.length + (trailingFeatured ? 1 : 0);
+  const [visibleCount, setVisibleCount] = useState(Math.min(PAGE_SIZE, totalCount));
   const sentinelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (visibleCount >= projects.length) return;
+    if (visibleCount >= totalCount) return;
     const el = sentinelRef.current;
     if (!el) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries.some((entry) => entry.isIntersecting)) {
-          setVisibleCount((count) => Math.min(count + PAGE_SIZE, projects.length));
+          setVisibleCount((count) => Math.min(count + PAGE_SIZE, totalCount));
         }
       },
       // Generous margin so the next row loads well before it's reached,
@@ -31,16 +41,15 @@ export function WorkProjectGrid({ projects }: { projects: Project[] }) {
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [visibleCount, projects.length]);
+  }, [visibleCount, totalCount]);
 
-  const visibleProjects = projects.slice(0, visibleCount);
+  const visibleProjects = projects.slice(0, Math.min(visibleCount, projects.length));
+  const showTrailing = Boolean(trailingFeatured) && visibleCount >= totalCount;
 
   return (
     <>
       <div className="grid grid-cols-1 gap-x-6 gap-y-9 sm:grid-cols-2">
         {visibleProjects.map((project, i) => (
-          // Keyed by id+index (not id alone) since the featured project can
-          // reappear as a filler card at the end of an odd-length grid.
           <motion.div
             key={`${project._id}-${i}`}
             initial={{ opacity: 0, y: 16 }}
@@ -51,7 +60,19 @@ export function WorkProjectGrid({ projects }: { projects: Project[] }) {
           </motion.div>
         ))}
       </div>
-      {visibleCount < projects.length && (
+
+      {showTrailing && trailingFeatured && (
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="mt-9"
+        >
+          <CaseStudyCard project={trailingFeatured} featured />
+        </motion.div>
+      )}
+
+      {visibleCount < totalCount && (
         <div ref={sentinelRef} aria-hidden className="h-px w-full" />
       )}
     </>

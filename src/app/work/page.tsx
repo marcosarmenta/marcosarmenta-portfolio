@@ -15,12 +15,15 @@ export default async function WorkIndexPage() {
   const [featuredProject, ...restProjects] = projects;
 
   // A 2-column grid leaves a dangling last row exactly when the rest-count
-  // is odd (i.e. the total project count is even). Repeat the featured
-  // project as a filler card in that case so every row stays full.
-  const gridProjects =
-    featuredProject && restProjects.length % 2 !== 0
-      ? [...restProjects, featuredProject]
-      : restProjects;
+  // is odd (i.e. the total project count is even). Rather than repeating
+  // the featured project as filler (which duplicates real content), pull
+  // the actual last project out of the grid and render it full-width in
+  // the same layout as the featured card at the top.
+  const hasTrailingFeatured = featuredProject && restProjects.length % 2 !== 0;
+  const trailingFeatured = hasTrailingFeatured
+    ? restProjects[restProjects.length - 1]
+    : undefined;
+  const gridProjects = hasTrailingFeatured ? restProjects.slice(0, -1) : restProjects;
 
   return (
     <div className="px-6 py-24 md:px-8 md:py-32">
@@ -38,7 +41,7 @@ export default async function WorkIndexPage() {
             <Reveal className="mb-9">
               <CaseStudyCard project={featuredProject} featured />
             </Reveal>
-            <WorkProjectGrid projects={gridProjects} />
+            <WorkProjectGrid projects={gridProjects} trailingFeatured={trailingFeatured} />
           </>
         ) : (
           <p className="text-body text-text-secondary">Projects coming soon.</p>
