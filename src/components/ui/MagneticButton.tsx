@@ -40,10 +40,10 @@ export function MagneticButton({
     y.set(0);
   };
 
-  const shellBg = variant === "primary" ? "bg-text-primary" : "bg-border-subtle";
+  const shellBg = variant === "primary" ? "bg-accent" : "bg-border-subtle";
   const innerGradient =
     variant === "primary"
-      ? "bg-gradient-to-b from-text-primary to-[#404040]"
+      ? "bg-gradient-to-b from-accent to-[#8A0000]"
       : "bg-gradient-to-b from-bg-canvas to-bg-surface";
   const textColor = variant === "primary" ? "text-white" : "text-text-secondary";
 

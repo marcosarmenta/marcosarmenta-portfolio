@@ -9,7 +9,7 @@ export function FooterStartProjectLink() {
     <button
       type="button"
       onClick={open}
-      className="text-left transition-colors hover:text-text-primary"
+      className="text-left transition-colors hover:text-accent"
     >
       Start a Project
     </button>

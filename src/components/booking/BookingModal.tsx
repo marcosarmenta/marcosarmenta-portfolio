@@ -48,7 +48,7 @@ export function BookingModal({ email }: { email?: string }) {
               type="button"
               onClick={close}
               aria-label="Close"
-              className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-lg border border-border-subtle text-text-secondary transition-colors hover:border-text-primary hover:text-text-primary"
+              className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-lg border border-border-subtle text-text-secondary transition-colors hover:border-accent hover:text-accent"
             >
               <XIcon size={16} />
             </button>

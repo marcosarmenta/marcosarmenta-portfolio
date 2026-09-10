@@ -14,12 +14,18 @@ export async function HeroSection() {
     .slice(0, 2)
     .toUpperCase();
 
+  // The headline's final word carries the one accent moment in the hero, so
+  // it's split off here rather than marked up in the CMS.
+  const headlineWords = siteSettings?.headline?.trim().split(/\s+/) ?? [];
+  const headlineLead = headlineWords.slice(0, -1).join(" ");
+  const headlineLastWord = headlineWords[headlineWords.length - 1];
+
   return (
     <SectionShell id="hero" className="p-0.5">
       <div className="relative overflow-hidden rounded-xl bg-bg-surface pl-6 pr-6 sm:pl-12">
         {siteSettings?.availabilityBadge && (
-          <span className="absolute right-6 top-6 inline-flex items-center gap-2.5 whitespace-nowrap rounded-[50px] bg-[#e7f8e2] px-3 py-1.5 text-[12px] text-[#42b91d]">
-            <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#42b91d]" />
+          <span className="absolute right-6 top-6 inline-flex items-center gap-2.5 whitespace-nowrap rounded-[50px] bg-bg-canvas px-3 py-1.5 text-[12px] text-text-primary">
+            <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
             {siteSettings.availabilityBadge}
           </span>
         )}
@@ -60,9 +66,16 @@ export async function HeroSection() {
 
           <div className="flex flex-col items-start gap-7">
             <div className="flex flex-col gap-3">
-              {siteSettings?.headline && (
+              {headlineLastWord && (
                 <p className="max-w-xl text-[32px] font-semibold leading-[1.15] tracking-[-0.96px] text-text-primary">
-                  {siteSettings.headline}
+                  {headlineLead && `${headlineLead} `}
+                  <span className="relative inline-block whitespace-nowrap">
+                    {headlineLastWord}
+                    <span
+                      aria-hidden
+                      className="absolute inset-x-0 -bottom-0.5 h-[3px] rounded-full bg-accent"
+                    />
+                  </span>
                 </p>
               )}
               {siteSettings?.subhead && (

@@ -45,8 +45,8 @@ export function Footer({ siteSettings }: { siteSettings: SiteSettings | null }) 
               <LiveClock />
             </div>
             {siteSettings?.availabilityBadge && (
-              <span className="inline-flex w-fit items-center gap-2 whitespace-nowrap rounded-[50px] bg-[#e7f8e2] px-3 py-1.5 text-[12px] text-[#42b91d]">
-                <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#42b91d]" />
+              <span className="inline-flex w-fit items-center gap-2 whitespace-nowrap rounded-[50px] bg-bg-canvas px-3 py-1.5 text-[12px] text-text-primary">
+                <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
                 {siteSettings.availabilityBadge}
               </span>
             )}
@@ -62,7 +62,7 @@ export function Footer({ siteSettings }: { siteSettings: SiteSettings | null }) 
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="transition-colors hover:text-text-primary"
+                  className="transition-colors hover:text-accent"
                 >
                   {link.label}
                 </Link>
@@ -79,7 +79,7 @@ export function Footer({ siteSettings }: { siteSettings: SiteSettings | null }) 
               {siteSettings?.email && (
                 <a
                   href={`mailto:${siteSettings.email}`}
-                  className="transition-colors hover:text-text-primary"
+                  className="transition-colors hover:text-accent"
                 >
                   {siteSettings.email}
                 </a>
@@ -96,7 +96,7 @@ export function Footer({ siteSettings }: { siteSettings: SiteSettings | null }) 
                     target="_blank"
                     rel="noreferrer noopener"
                     aria-label={label}
-                    className="flex h-8 w-8 items-center justify-center rounded-lg border border-border-subtle transition-colors hover:border-text-primary"
+                    className="flex h-8 w-8 items-center justify-center rounded-lg border border-border-subtle transition-colors hover:border-accent"
                   >
                     <Image src={src} alt="" width={width} height={height} unoptimized />
                   </a>
@@ -111,10 +111,10 @@ export function Footer({ siteSettings }: { siteSettings: SiteSettings | null }) 
             Copyright © {year} {name}
           </p>
           <div className="flex items-center gap-2.5">
-            <Link href="/privacy" className="transition-colors hover:text-text-primary">
+            <Link href="/privacy" className="transition-colors hover:text-accent">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="transition-colors hover:text-text-primary">
+            <Link href="/terms" className="transition-colors hover:text-accent">
               Terms of Service
             </Link>
           </div>

@@ -77,7 +77,7 @@ export default async function CaseStudyPage({
         <Reveal>
           <Link
             href="/work"
-            className="mb-10 inline-flex items-center gap-2 text-small text-text-secondary transition-colors hover:text-text-primary"
+            className="mb-10 inline-flex items-center gap-2 text-small text-text-secondary transition-colors hover:text-accent"
           >
             <ArrowLeftIcon size={14} />
             All Projects
