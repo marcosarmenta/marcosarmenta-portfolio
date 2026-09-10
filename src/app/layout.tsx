@@ -11,11 +11,24 @@ import { getSiteSettings } from "@/lib/sanity";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://marcosarmenta.com"),
   title: "Marcos Armenta",
   description: "Designer-who-codes portfolio.",
   icons: {
     icon: "/favicon.png",
     apple: "/apple_touch_icon.png",
+  },
+  openGraph: {
+    title: "Marcos Armenta",
+    description: "Designer-who-codes portfolio.",
+    url: "https://marcosarmenta.com",
+    siteName: "Marcos Armenta",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Marcos Armenta",
+    description: "Designer-who-codes portfolio.",
   },
 };
 
