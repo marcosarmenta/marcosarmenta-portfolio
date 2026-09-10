@@ -19,6 +19,7 @@ export function LogoMarquee({ logos }: { logos: Logo[] }) {
               alt={logo.name}
               width={140}
               height={48}
+              unoptimized
               className="h-full w-auto object-contain opacity-60 grayscale transition-opacity hover:opacity-100"
             />
           </div>

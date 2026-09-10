@@ -8,7 +8,8 @@ interface SectionShellProps {
 }
 
 // Canvas-colored outer wrapper (22px radius) that every section nests its
-// white content cards inside.
+// white content cards inside. Owns the 760px content-width cap and
+// centering itself so no call site can forget it.
 export function SectionShell({
   children,
   id,
@@ -16,7 +17,10 @@ export function SectionShell({
   as: Component = "section",
 }: SectionShellProps) {
   return (
-    <Component id={id} className={`rounded-xl bg-bg-canvas ${className}`}>
+    <Component
+      id={id}
+      className={`mx-auto w-full max-w-content rounded-xl bg-bg-canvas ${className}`}
+    >
       {children}
     </Component>
   );

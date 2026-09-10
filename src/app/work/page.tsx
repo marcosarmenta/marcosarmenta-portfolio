@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { getAllProjects } from "@/lib/sanity";
-import { StaggerGroup } from "@/components/motion/StaggerGroup";
-import { StaggerItem } from "@/components/motion/StaggerItem";
+import { Reveal } from "@/components/motion/Reveal";
 import { CaseStudyCard } from "@/components/sections/CaseStudyCard";
+import { WorkProjectGrid } from "@/components/sections/WorkProjectGrid";
 
 export const metadata: Metadata = {
   title: "Work | Marcos Armenta",
@@ -11,6 +11,15 @@ export const metadata: Metadata = {
 
 export default async function WorkIndexPage() {
   const projects = await getAllProjects();
+  const [featuredProject, ...restProjects] = projects;
+
+  // A 2-column grid leaves a dangling last row exactly when the rest-count
+  // is odd (i.e. the total project count is even). Repeat the featured
+  // project as a filler card in that case so every row stays full.
+  const gridProjects =
+    featuredProject && restProjects.length % 2 !== 0
+      ? [...restProjects, featuredProject]
+      : restProjects;
 
   return (
     <div className="px-6 py-24 md:px-8 md:py-32">
@@ -20,14 +29,13 @@ export default async function WorkIndexPage() {
           <h1 className="text-h1 text-text-primary">All Projects</h1>
         </div>
 
-        {projects.length > 0 ? (
-          <StaggerGroup className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {projects.map((project) => (
-              <StaggerItem key={project._id}>
-                <CaseStudyCard project={project} />
-              </StaggerItem>
-            ))}
-          </StaggerGroup>
+        {featuredProject ? (
+          <>
+            <Reveal className="mb-9">
+              <CaseStudyCard project={featuredProject} featured />
+            </Reveal>
+            <WorkProjectGrid projects={gridProjects} />
+          </>
         ) : (
           <p className="text-body text-text-secondary">Projects coming soon.</p>
         )}

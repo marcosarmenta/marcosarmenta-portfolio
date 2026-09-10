@@ -7,7 +7,7 @@ import { useAnchorScroll } from "@/lib/useAnchorScroll";
 export function HeroCTAs() {
   const { scrollToHash } = useAnchorScroll();
 
-  const handleClick = (hash: string) => (e: MouseEvent<HTMLAnchorElement>) => {
+  const handleClick = (hash: string) => (e: MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
     e.preventDefault();
     scrollToHash(hash);
   };

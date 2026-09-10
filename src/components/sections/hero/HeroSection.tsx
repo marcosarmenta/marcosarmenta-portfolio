@@ -15,7 +15,7 @@ export async function HeroSection() {
     .toUpperCase();
 
   return (
-    <SectionShell id="hero" className="px-6 pb-8 pt-6 md:px-8">
+    <SectionShell id="hero" className="p-0.5">
       <div className="relative overflow-hidden rounded-xl bg-bg-surface pl-6 pr-6 sm:pl-12">
         {siteSettings?.availabilityBadge && (
           <span className="absolute right-6 top-6 inline-flex items-center gap-2.5 whitespace-nowrap rounded-[50px] bg-[#e7f8e2] px-3 py-1.5 text-[12px] text-[#42b91d]">

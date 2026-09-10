@@ -10,10 +10,10 @@ const SPRING = { stiffness: 200, damping: 15, mass: 0.4 };
 const STRENGTH = 0.35;
 
 interface MagneticButtonProps {
-  href: string;
+  href?: string;
   children: ReactNode;
   variant?: "primary" | "secondary";
-  onClick?: (e: MouseEvent<HTMLAnchorElement>) => void;
+  onClick?: (e: MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => void;
   className?: string;
 }
 
@@ -29,7 +29,7 @@ export function MagneticButton({
   const springX = useSpring(x, SPRING);
   const springY = useSpring(y, SPRING);
 
-  const handleMouseMove = (e: MouseEvent<HTMLAnchorElement>) => {
+  const handleMouseMove = (e: MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     x.set((e.clientX - rect.left - rect.width / 2) * STRENGTH);
     y.set((e.clientY - rect.top - rect.height / 2) * STRENGTH);
@@ -47,6 +47,34 @@ export function MagneticButton({
       : "bg-gradient-to-b from-bg-canvas to-bg-surface";
   const textColor = variant === "primary" ? "text-white" : "text-text-secondary";
 
+  const shellClassName = `inline-flex shrink-0 overflow-hidden rounded-sm p-px ${shellBg} ${className}`;
+  const innerContent = (
+    <span
+      className={`relative flex w-full items-center justify-center whitespace-nowrap rounded-sm px-5 py-[14px] text-[14px] font-medium tracking-[-0.14px] ${innerGradient} ${textColor}`}
+    >
+      {children}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 rounded-[inherit] shadow-[inset_0px_-4px_4px_0px_rgba(255,255,255,0.2),inset_0px_4px_4px_0px_rgba(255,255,255,0.2)]"
+      />
+    </span>
+  );
+
+  if (!href) {
+    return (
+      <motion.button
+        type="button"
+        onClick={onClick}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{ x: springX, y: springY }}
+        className={shellClassName}
+      >
+        {innerContent}
+      </motion.button>
+    );
+  }
+
   return (
     <MotionLink
       href={href}
@@ -54,17 +82,9 @@ export function MagneticButton({
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ x: springX, y: springY }}
-      className={`inline-flex shrink-0 overflow-hidden rounded-sm p-px ${shellBg} ${className}`}
+      className={shellClassName}
     >
-      <span
-        className={`relative flex w-full items-center justify-center whitespace-nowrap rounded-sm px-5 py-[14px] text-[14px] font-medium tracking-[-0.14px] ${innerGradient} ${textColor}`}
-      >
-        {children}
-        <span
-          aria-hidden
-          className="pointer-events-none absolute inset-0 rounded-[inherit] shadow-[inset_0px_-4px_4px_0px_rgba(255,255,255,0.2),inset_0px_4px_4px_0px_rgba(255,255,255,0.2)]"
-        />
-      </span>
+      {innerContent}
     </MotionLink>
   );
 }

@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, type MouseEvent } from "react";
 import { ListIcon } from "@phosphor-icons/react/dist/csr/List";
 import { XIcon } from "@phosphor-icons/react/dist/csr/X";
 import { useAnchorScroll } from "@/lib/useAnchorScroll";
 import { LiveClock } from "@/components/nav/LiveClock";
-import type { SocialLinks } from "@/lib/sanity";
+import { MagneticButton } from "@/components/ui/MagneticButton";
+import { useBookingModal } from "@/components/booking/BookingModalProvider";
 
 type NavLink =
   | { label: string; kind: "home" }
@@ -23,17 +23,16 @@ const NAV_LINKS: NavLink[] = [
   { label: "Contact", kind: "anchor", hash: "#contact" },
 ];
 
-const SOCIAL_ICON_MAP = [
-  { key: "x", src: "/images/icons/social-x.svg", label: "X (Twitter)" },
-  { key: "linkedin", src: "/images/icons/social-linkedin.svg", label: "LinkedIn" },
-  { key: "dribbble", src: "/images/icons/social-dribbble.svg", label: "Dribbble" },
-  { key: "behance", src: "/images/icons/social-behance.svg", label: "Behance" },
-] as const;
-
-export function StickyNav({ socialLinks }: { socialLinks?: SocialLinks }) {
+export function StickyNav() {
   const pathname = usePathname();
   const { scrollToHash, scrollToTop } = useAnchorScroll();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { open: openBookingModal } = useBookingModal();
+
+  const handleStartProject = () => {
+    setMenuOpen(false);
+    openBookingModal();
+  };
 
   const handleHomeClick = (e: MouseEvent) => {
     setMenuOpen(false);
@@ -47,13 +46,6 @@ export function StickyNav({ socialLinks }: { socialLinks?: SocialLinks }) {
     if (pathname !== "/") return;
     if (scrollToHash(hash)) e.preventDefault();
   };
-
-  const socials = SOCIAL_ICON_MAP.map(({ key, src, label }) => ({
-    key,
-    src,
-    label,
-    href: socialLinks?.[key],
-  })).filter((s): s is typeof s & { href: string } => Boolean(s.href));
 
   const renderLink = (link: NavLink, className: string) => {
     if (link.kind === "home") {
@@ -88,8 +80,8 @@ export function StickyNav({ socialLinks }: { socialLinks?: SocialLinks }) {
   };
 
   return (
-    <header className="sticky top-6 z-50 mx-auto w-fit max-w-[calc(100%-3rem)]">
-      <div className="flex items-center justify-center gap-10 rounded-[10px] bg-[rgba(244,245,246,0.2)] px-5 py-[18px] backdrop-blur-xl">
+    <header className="sticky top-6 z-50 px-6 md:px-8">
+      <div className="mx-auto flex w-full max-w-content items-center justify-center gap-10 rounded-[10px] bg-[rgba(244,245,246,0.2)] px-5 py-[18px] backdrop-blur-xl">
         <LiveClock />
 
         <nav className="hidden items-center gap-5 md:flex">
@@ -98,20 +90,13 @@ export function StickyNav({ socialLinks }: { socialLinks?: SocialLinks }) {
           )}
         </nav>
 
-        <div className="hidden items-center gap-2 lg:flex">
-          {socials.map(({ key, src, label, href }) => (
-            <a
-              key={key}
-              href={href}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label={label}
-              className="transition-opacity hover:opacity-70"
-            >
-              <Image src={src} alt="" width={32} height={32} />
-            </a>
-          ))}
-        </div>
+        <MagneticButton
+          variant="primary"
+          onClick={handleStartProject}
+          className="hidden lg:inline-flex"
+        >
+          Start a Project
+        </MagneticButton>
 
         <button
           type="button"
@@ -125,29 +110,18 @@ export function StickyNav({ socialLinks }: { socialLinks?: SocialLinks }) {
       </div>
 
       {menuOpen && (
-        <div className="mt-2 w-64 rounded-[10px] bg-[rgba(244,245,246,0.9)] p-6 backdrop-blur-xl md:hidden">
+        <div className="mx-auto mt-2 w-full max-w-content rounded-[10px] bg-[rgba(244,245,246,0.9)] p-6 backdrop-blur-xl md:hidden">
           <nav className="flex flex-col gap-4">
             {NAV_LINKS.map((link) =>
               renderLink(link, "text-[14px] font-semibold text-text-primary")
             )}
           </nav>
 
-          {socials.length > 0 && (
-            <div className="mt-6 flex items-center gap-3 border-t border-border-subtle pt-6">
-              {socials.map(({ key, src, label, href }) => (
-                <a
-                  key={key}
-                  href={href}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  aria-label={label}
-                  className="transition-opacity hover:opacity-70"
-                >
-                  <Image src={src} alt="" width={28} height={28} />
-                </a>
-              ))}
-            </div>
-          )}
+          <div className="mt-6 border-t border-border-subtle pt-6">
+            <MagneticButton variant="primary" onClick={handleStartProject} className="w-full">
+              Start a Project
+            </MagneticButton>
+          </div>
         </div>
       )}
     </header>

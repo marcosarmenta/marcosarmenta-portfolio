@@ -8,7 +8,7 @@ export async function CaseStudiesBentoGrid() {
   const projects = (await getFeaturedProjects()).slice(0, 4);
 
   return (
-    <div id="work" className="flex flex-col items-center gap-10 px-6 pb-11 sm:px-12">
+    <div id="work" className="flex w-full flex-col items-center gap-10 px-6 pb-11 sm:px-12">
       <div className="flex w-full flex-col gap-3">
         <h2 className="text-[20px] text-text-primary">Some of My Work</h2>
         <p className="max-w-xl text-body text-text-secondary">

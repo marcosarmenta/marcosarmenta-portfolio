@@ -42,12 +42,6 @@ export interface Service {
   tags?: string[];
 }
 
-export interface FaqItem {
-  _key: string;
-  question: string;
-  answer: string;
-}
-
 export interface Logo {
   _key: string;
   name: string;
@@ -73,7 +67,6 @@ export interface SiteSettings {
   email?: string;
   resumeFile?: SanityFile;
   services: Service[];
-  faq: FaqItem[];
   logos: Logo[];
   socialLinks?: SocialLinks;
 }
@@ -84,7 +77,7 @@ export interface ContentBlock {
   _key: string;
   eyebrow?: string;
   headline?: string;
-  body?: unknown[];
+  body?: PortableTextBlock[];
   images?: SanityImage[];
   layout: ContentBlockLayout;
 }
@@ -94,6 +87,7 @@ export interface Project {
   title: string;
   slug: string;
   category?: string;
+  location?: string;
   dateRange?: string;
   excerpt?: string;
   heroImage?: SanityImage;
@@ -102,6 +96,7 @@ export interface Project {
   featured: boolean;
   order?: number;
   contentBlocks: ContentBlock[];
+  galleryImages?: SanityImage[];
 }
 
 // ---------------------------------------------------------------------------
@@ -113,6 +108,7 @@ const PROJECT_FIELDS = /* groq */ `
   title,
   "slug": slug.current,
   category,
+  location,
   dateRange,
   excerpt,
   heroImage,
@@ -120,7 +116,8 @@ const PROJECT_FIELDS = /* groq */ `
   ctaUrl,
   featured,
   order,
-  contentBlocks
+  contentBlocks,
+  galleryImages
 `;
 
 const SITE_SETTINGS_QUERY = defineQuery(
@@ -136,7 +133,6 @@ const SITE_SETTINGS_QUERY = defineQuery(
     email,
     resumeFile,
     services,
-    faq,
     logos,
     socialLinks
   }`

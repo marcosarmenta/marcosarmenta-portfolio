@@ -1,29 +1,30 @@
 import { getSiteSettings } from "@/lib/sanity";
 import { Reveal } from "@/components/motion/Reveal";
-import { SectionFadeMask } from "@/components/layout/SectionFadeMask";
+import { SectionShell } from "@/components/layout/SectionShell";
 import { CalEmbed } from "./CalEmbed";
 
 export async function ContactSection() {
   const siteSettings = await getSiteSettings();
 
   return (
-    <section id="contact" className="relative px-6 py-24 md:px-8 md:py-32">
-      <div className="mx-auto w-full max-w-content">
-        <Reveal className="mb-12 flex flex-col items-center gap-3 text-center">
-          <p className="font-mono text-small uppercase tracking-wide text-text-secondary">
-            Contact
-          </p>
-          <h2 className="text-h1 text-text-primary">Let&apos;s work together</h2>
-        </Reveal>
+    <SectionShell
+      id="contact"
+      className="flex flex-col items-start gap-8 px-6 pb-16 pt-11 sm:flex-row sm:gap-11 sm:px-[50px]"
+    >
+      <Reveal className="flex w-full flex-col gap-2.5 sm:w-[280px] sm:shrink-0">
+        <h2 className="text-[20px] text-text-primary">Let&apos;s bring your idea to life</h2>
+        <p className="text-[14px] leading-[24px] text-text-secondary">
+          I&apos;m always open to new opportunities, collaborations, and creative conversations.
+          Feel free to reach out to discuss your project.
+        </p>
+      </Reveal>
 
-        <Reveal
-          delay={0.1}
-          className="overflow-hidden rounded-lg border border-border-subtle bg-bg-surface"
-        >
-          <CalEmbed email={siteSettings?.email} />
-        </Reveal>
-      </div>
-      <SectionFadeMask />
-    </section>
+      <Reveal
+        delay={0.1}
+        className="w-full flex-1 rounded-lg border border-border-subtle bg-bg-surface p-6"
+      >
+        <CalEmbed email={siteSettings?.email} />
+      </Reveal>
+    </SectionShell>
   );
 }
