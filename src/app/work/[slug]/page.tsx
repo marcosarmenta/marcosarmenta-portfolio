@@ -9,6 +9,8 @@ import { ArrowUpRightIcon } from "@phosphor-icons/react/dist/ssr/ArrowUpRight";
 import { getAllProjects, getProjectBySlug, urlFor, type Project } from "@/lib/sanity";
 import { Reveal } from "@/components/motion/Reveal";
 import { StartProjectButton } from "@/components/sections/StartProjectButton";
+import { SectionShell } from "@/components/layout/SectionShell";
+import { CategoryChip } from "@/components/ui/CategoryChip";
 
 export async function generateStaticParams() {
   const projects = await getAllProjects();
@@ -71,55 +73,54 @@ export default async function CaseStudyPage({
       : undefined;
 
   return (
-    <div className="px-6 py-24 md:px-8 md:py-32">
-      <div className="mx-auto w-full max-w-content">
-        {/* Breadcrumb */}
-        <Reveal>
+    <div className="py-24 md:py-32">
+      <SectionShell className="flex flex-col gap-8 p-6 sm:p-8">
+        {/* Header / meta card */}
+        <Reveal className="flex flex-col gap-8 rounded-lg bg-bg-surface p-6 sm:p-8">
           <Link
             href="/work"
-            className="mb-10 inline-flex items-center gap-2 text-small text-text-secondary transition-colors hover:text-accent"
+            className="inline-flex w-fit items-center gap-2 text-small text-text-secondary transition-colors hover:text-accent"
           >
             <ArrowLeftIcon size={14} />
             All Projects
           </Link>
-        </Reveal>
 
-        {/* Meta bar */}
-        <Reveal delay={0.05} className="mb-6 flex flex-col gap-3">
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-small uppercase tracking-wide text-text-secondary">
-            {disciplines.map((d) => (
-              <span key={d}>{d}</span>
-            ))}
-            {project.location && <span>{project.location}</span>}
-          </div>
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="flex flex-wrap items-center gap-2">
+              {disciplines.map((d) => (
+                <CategoryChip key={d}>{d}</CategoryChip>
+              ))}
+              {project.location && <CategoryChip>{project.location}</CategoryChip>}
+            </div>
 
-          {project.ctaUrl && (
-            <div className="flex items-center gap-3">
+            {project.ctaUrl && (
               <a
                 href={project.ctaUrl}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-accent px-3 py-1.5 font-mono text-small uppercase tracking-wide text-accent transition-colors hover:bg-accent hover:text-white"
+                className="inline-flex w-fit shrink-0 items-center gap-1.5 rounded-lg bg-text-primary px-4 py-2 text-small font-medium text-bg-canvas transition-colors hover:bg-accent"
               >
                 {project.ctaLabel ?? "View Live Site"}
-                <ArrowUpRightIcon size={12} />
+                <ArrowUpRightIcon size={14} />
               </a>
-              <span className="h-px flex-1 bg-accent/40" aria-hidden />
-              <ArrowRightIcon size={14} className="shrink-0 text-accent" aria-hidden />
-            </div>
-          )}
+            )}
+          </div>
         </Reveal>
 
-        {/* Hero */}
-        <Reveal delay={0.1} className="mb-12 flex flex-col gap-6">
+        {/* Main content / description card */}
+        <Reveal delay={0.05} className="flex flex-col gap-6 rounded-lg bg-bg-surface p-6 sm:p-8">
           <h1 className="max-w-3xl text-h1 text-text-primary">{project.excerpt ?? project.title}</h1>
           {introBlock?.body && (
             <div className="max-w-2xl text-body text-text-secondary">
               <PortableText value={introBlock.body} />
             </div>
           )}
-          {project.heroImage && (
-            <div className="relative mt-4 aspect-[16/10] w-full overflow-hidden rounded-[16px] bg-border-subtle/40">
+        </Reveal>
+
+        {/* Hero image / mockup card */}
+        {project.heroImage && (
+          <Reveal delay={0.1} className="rounded-lg bg-bg-surface p-3 sm:p-4">
+            <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[12px] bg-border-subtle/40">
               <Image
                 src={urlFor(project.heroImage).width(2000).height(1250).url()}
                 alt={project.title}
@@ -129,11 +130,13 @@ export default async function CaseStudyPage({
                 className="object-cover"
               />
             </div>
-          )}
-        </Reveal>
+          </Reveal>
+        )}
+      </SectionShell>
 
+      <div className="mx-auto w-full max-w-content">
         {/* 01 / 02 sections */}
-        <div className="flex flex-col gap-16">
+        <div className="mt-16 flex flex-col gap-16">
           {sectionBlocks.map((block) => (
             <Reveal key={block._key} className="flex flex-col gap-6">
               <div className="flex flex-col gap-3">
@@ -178,40 +181,43 @@ export default async function CaseStudyPage({
           </Reveal>
         )}
 
-        {/* Project nav */}
-        {(previousProject || nextProject) && (
-          <div className="mt-24 grid grid-cols-1 gap-4 border-t border-border-subtle pt-8 sm:grid-cols-2">
-            {previousProject ? (
-              <Link
-                href={`/work/${previousProject.slug}`}
-                className="group flex flex-col gap-2 sm:items-start"
-              >
-                <span className="inline-flex items-center gap-2 text-small text-text-secondary">
-                  <ArrowLeftIcon size={14} className="transition-transform group-hover:-translate-x-1" />
-                  Previous
-                </span>
-                <span className="text-[16px] font-medium text-text-primary">
-                  {previousProject.title}
-                </span>
-              </Link>
-            ) : (
-              <span />
-            )}
-            {nextProject && (
-              <Link
-                href={`/work/${nextProject.slug}`}
-                className="group flex flex-col gap-2 sm:items-end sm:text-right"
-              >
-                <span className="inline-flex items-center gap-2 text-small text-text-secondary">
-                  Next
-                  <ArrowRightIcon size={14} className="transition-transform group-hover:translate-x-1" />
-                </span>
-                <span className="text-[16px] font-medium text-text-primary">{nextProject.title}</span>
-              </Link>
-            )}
-          </div>
-        )}
+      </div>
 
+      {/* Project nav */}
+      {(previousProject || nextProject) && (
+        <SectionShell className="mt-8 grid grid-cols-1 gap-8 p-6 sm:grid-cols-2 sm:p-8">
+          {previousProject ? (
+            <Link
+              href={`/work/${previousProject.slug}`}
+              className="group flex flex-col items-start gap-2 rounded-lg border border-border-subtle bg-bg-surface p-4 text-left transition-colors hover:border-accent"
+            >
+              <span className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wide text-text-secondary">
+                <ArrowLeftIcon size={18} className="transition-transform group-hover:-translate-x-1" />
+                Previous
+              </span>
+              <span className="text-body-lg font-bold text-text-primary">
+                {previousProject.title}
+              </span>
+            </Link>
+          ) : (
+            <span />
+          )}
+          {nextProject && (
+            <Link
+              href={`/work/${nextProject.slug}`}
+              className="group flex flex-col items-end gap-2 rounded-lg border border-border-subtle bg-bg-surface p-4 text-right transition-colors hover:border-accent"
+            >
+              <span className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wide text-text-secondary">
+                Next
+                <ArrowRightIcon size={18} className="transition-transform group-hover:translate-x-1" />
+              </span>
+              <span className="text-body-lg font-bold text-text-primary">{nextProject.title}</span>
+            </Link>
+          )}
+        </SectionShell>
+      )}
+
+      <div className="mx-auto w-full max-w-content">
         {/* Closing CTA band */}
         <Reveal className="mt-16 flex flex-col items-center gap-4 rounded-xl bg-bg-surface px-6 py-16 text-center">
           <h2 className="max-w-lg text-h2 text-text-primary">

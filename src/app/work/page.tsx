@@ -4,6 +4,7 @@ import { Reveal } from "@/components/motion/Reveal";
 import { CaseStudyCard } from "@/components/sections/CaseStudyCard";
 import { WorkProjectGrid } from "@/components/sections/WorkProjectGrid";
 import { StarMark } from "@/components/ui/StarMark";
+import { SectionShell } from "@/components/layout/SectionShell";
 
 export const metadata: Metadata = {
   title: "Work | Marcos Armenta",
@@ -26,27 +27,29 @@ export default async function WorkIndexPage() {
   const gridProjects = hasTrailingFeatured ? restProjects.slice(0, -1) : restProjects;
 
   return (
-    <div className="px-6 py-24 md:px-8 md:py-32">
-      <div className="mx-auto w-full max-w-content">
-        <div className="mb-12 flex flex-col gap-3">
+    <div className="py-24 md:py-32">
+      <div className="mx-auto mb-12 w-full max-w-content">
+        <div className="flex flex-col gap-3">
           <p className="flex items-center gap-2 font-mono text-small uppercase tracking-wide text-text-secondary">
             <StarMark />
             Work
           </p>
           <h1 className="text-h1 text-text-primary">All Projects</h1>
         </div>
-
-        {featuredProject ? (
-          <>
-            <Reveal className="mb-9">
-              <CaseStudyCard project={featuredProject} featured />
-            </Reveal>
-            <WorkProjectGrid projects={gridProjects} trailingFeatured={trailingFeatured} />
-          </>
-        ) : (
-          <p className="text-body text-text-secondary">Projects coming soon.</p>
-        )}
       </div>
+
+      {featuredProject ? (
+        <SectionShell className="flex flex-col gap-9 p-6 sm:p-12">
+          <Reveal>
+            <CaseStudyCard project={featuredProject} featured />
+          </Reveal>
+          <WorkProjectGrid projects={gridProjects} trailingFeatured={trailingFeatured} />
+        </SectionShell>
+      ) : (
+        <div className="mx-auto w-full max-w-content">
+          <p className="text-body text-text-secondary">Projects coming soon.</p>
+        </div>
+      )}
     </div>
   );
 }

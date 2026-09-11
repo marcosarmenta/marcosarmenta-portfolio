@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
 import { useState, type MouseEvent } from "react";
 import { urlFor, type Project } from "@/lib/sanity";
+import { CategoryChip } from "@/components/ui/CategoryChip";
 
 const SPRING = { stiffness: 300, damping: 30, mass: 0.5 };
 const BUTTON_WIDTH = 152;
@@ -17,6 +18,8 @@ export function CaseStudyCard({
   project: Project;
   featured?: boolean;
 }) {
+  const disciplines = project.category?.split("·").map((d) => d.trim()).filter(Boolean) ?? [];
+
   const [hovered, setHovered] = useState(false);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -35,12 +38,15 @@ export function CaseStudyCard({
   };
 
   return (
-    <Link href={`/work/${project.slug}`} className="group flex flex-col gap-4">
+    <Link
+      href={`/work/${project.slug}`}
+      className="group flex flex-col overflow-hidden rounded-lg bg-bg-surface"
+    >
       <div
         onMouseEnter={handleMouseEnter}
         onMouseMove={trackPointer}
         onMouseLeave={() => setHovered(false)}
-        className={`relative w-full overflow-hidden rounded-[12px] bg-border-subtle/40 ${
+        className={`relative w-full overflow-hidden bg-border-subtle/40 ${
           featured ? "aspect-[16/9]" : "aspect-[5/4]"
         }`}
       >
@@ -84,9 +90,15 @@ export function CaseStudyCard({
         </AnimatePresence>
       </div>
 
-      <div className="flex flex-col gap-0.5">
-        {project.category && (
-          <p className="text-[12px] tracking-[-0.12px] text-text-secondary">{project.category}</p>
+      <div className="flex flex-col gap-2 p-5">
+        {disciplines.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2">
+            {disciplines.map((d) => (
+              <CategoryChip key={d} size="sm">
+                {d}
+              </CategoryChip>
+            ))}
+          </div>
         )}
         <h3
           className={`font-medium tracking-[-0.16px] text-text-primary ${
