@@ -5,7 +5,7 @@ import Image from "next/image";
 import { motion, useMotionValue, useSpring, AnimatePresence } from "framer-motion";
 import { useState, type MouseEvent } from "react";
 import { urlFor, type Project } from "@/lib/sanity";
-import { CategoryChip } from "@/components/ui/CategoryChip";
+import { StarMark } from "@/components/ui/StarMark";
 
 const SPRING = { stiffness: 300, damping: 30, mass: 0.5 };
 const BUTTON_WIDTH = 152;
@@ -70,6 +70,19 @@ export function CaseStudyCard({
 
         <div className="pointer-events-none absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/15" />
 
+        {disciplines.length > 0 && (
+          <div className="pointer-events-none absolute left-3 top-3 z-10 flex flex-wrap items-center gap-1.5">
+            {disciplines.map((d, i) => (
+              <span key={d} className="flex items-center gap-1.5">
+                {i > 0 && <StarMark size={8} className="brightness-0 invert" />}
+                <span className="inline-flex items-center rounded-full border border-white/30 bg-white/10 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wide text-white backdrop-blur-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.5),inset_0_-1px_1px_rgba(255,255,255,0.15),0_4px_12px_rgba(0,0,0,0.25)]">
+                  {d}
+                </span>
+              </span>
+            ))}
+          </div>
+        )}
+
         <AnimatePresence>
           {hovered && (
             <motion.div
@@ -91,15 +104,6 @@ export function CaseStudyCard({
       </div>
 
       <div className="flex flex-col gap-2 p-5">
-        {disciplines.length > 0 && (
-          <div className="flex flex-wrap items-center gap-2">
-            {disciplines.map((d) => (
-              <CategoryChip key={d} size="sm">
-                {d}
-              </CategoryChip>
-            ))}
-          </div>
-        )}
         <h3
           className={`font-medium tracking-[-0.16px] text-text-primary ${
             featured ? "text-[20px]" : "text-[16px]"
