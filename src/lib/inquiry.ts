@@ -1,3 +1,15 @@
+export const PROJECT_TYPE_OPTIONS = [
+  "Branding",
+  "Web Design",
+  "Web Development",
+  "Product Design",
+  "Other",
+] as const;
+
+export const BUDGET_RANGE_OPTIONS = ["Under $5k", "$5k–10k", "$10k–25k", "$25k+"] as const;
+
+export const TIMELINE_OPTIONS = ["ASAP", "1–2 months", "2–3 months", "Flexible"] as const;
+
 export interface InquirySubmission {
   name: string;
   email: string;

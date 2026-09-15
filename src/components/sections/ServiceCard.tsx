@@ -1,8 +1,12 @@
+import Link from "next/link";
 import type { Service } from "@/lib/sanity";
 
-export function ServiceCard({ service }: { service: Service }) {
+const cardClassName =
+  "group flex h-full flex-col items-start justify-between rounded-lg bg-bg-surface p-9 transition-colors duration-300 hover:bg-black";
+
+function CardContent({ service }: { service: Service }) {
   return (
-    <div className="group flex h-full flex-col items-start justify-between rounded-lg bg-bg-surface p-9 transition-colors duration-300 hover:bg-black">
+    <>
       <p className="text-[36px] font-medium leading-[36px] text-border-subtle transition-colors duration-300 group-hover:text-accent">
         {service.number}
       </p>
@@ -16,6 +20,22 @@ export function ServiceCard({ service }: { service: Service }) {
           </p>
         )}
       </div>
+    </>
+  );
+}
+
+export function ServiceCard({ service, href }: { service: Service; href?: string }) {
+  if (href) {
+    return (
+      <Link href={href} className={cardClassName}>
+        <CardContent service={service} />
+      </Link>
+    );
+  }
+
+  return (
+    <div className={cardClassName}>
+      <CardContent service={service} />
     </div>
   );
 }

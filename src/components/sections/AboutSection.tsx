@@ -1,31 +1,12 @@
 import Image from "next/image";
-import type { PortableTextBlock } from "next-sanity";
+import Link from "next/link";
 import { DownloadSimpleIcon } from "@phosphor-icons/react/dist/ssr/DownloadSimple";
+import { ArrowUpRightIcon } from "@phosphor-icons/react/dist/ssr/ArrowUpRight";
 import { getSiteSettings, fileUrl } from "@/lib/sanity";
 import { Reveal } from "@/components/motion/Reveal";
-import { ScrollColorText, type TextRun } from "@/components/sections/ScrollColorText";
+import { ScrollColorText } from "@/components/sections/ScrollColorText";
+import { bioToRuns } from "@/lib/bio";
 import { StarMark } from "@/components/ui/StarMark";
-
-interface BioSpan {
-  _type: "span";
-  text: string;
-  marks?: string[];
-}
-
-// Flattens the bio's portable text into plain runs (text + bold flag) for
-// the letter-by-letter scroll animation, which needs raw characters rather
-// than a React tree.
-function bioToRuns(blocks: PortableTextBlock[]): TextRun[] {
-  const runs: TextRun[] = [];
-  blocks.forEach((block, blockIndex) => {
-    if (blockIndex > 0) runs.push({ text: " " });
-    const spans = (block as unknown as { children?: BioSpan[] }).children ?? [];
-    spans.forEach((span) => {
-      runs.push({ text: span.text, bold: span.marks?.includes("strong") });
-    });
-  });
-  return runs;
-}
 
 export async function AboutSection() {
   const siteSettings = await getSiteSettings();
@@ -33,10 +14,22 @@ export async function AboutSection() {
   return (
     <div id="about" className="w-full rounded-xl bg-bg-surface pb-6 pl-6 pr-6 sm:pl-12">
       <Reveal className="flex flex-col items-start gap-7 py-11">
-        <p className="flex items-center gap-2 text-body text-text-secondary">
-          <StarMark />
-          About Myself
-        </p>
+        <div className="flex w-full items-center justify-between gap-4">
+          <p className="flex items-center gap-2 text-body text-text-secondary">
+            <StarMark />
+            About Myself
+          </p>
+          <Link
+            href="/about"
+            className="group flex shrink-0 items-center gap-1 font-mono text-[12px] uppercase tracking-wide text-text-secondary transition-colors hover:text-accent"
+          >
+            Learn More
+            <ArrowUpRightIcon
+              size={12}
+              className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            />
+          </Link>
+        </div>
 
         {siteSettings?.bio && siteSettings.bio.length > 0 ? (
           <ScrollColorText

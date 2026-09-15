@@ -1,9 +1,5 @@
 const VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
-// Set on the widget's data-action attribute once the /start-a-project page
-// ships; checked here so a token minted for a different form can't be replayed.
-const EXPECTED_ACTION = "inquiry";
-
 function getAllowedHostnames(): Set<string> {
   return new Set(
     (process.env.TURNSTILE_HOSTNAMES ?? "")
@@ -13,7 +9,13 @@ function getAllowedHostnames(): Set<string> {
   );
 }
 
-export async function verifyTurnstileToken(token: string, ip: string): Promise<boolean> {
+// expectedAction must match the widget's data-action attribute on the form
+// that minted the token — stops a token from one form being replayed on another.
+export async function verifyTurnstileToken(
+  token: string,
+  ip: string,
+  expectedAction: string
+): Promise<boolean> {
   const secret = process.env.TURNSTILE_SECRET_KEY;
   if (!secret) throw new Error("TURNSTILE_SECRET_KEY is not set");
 
@@ -38,7 +40,7 @@ export async function verifyTurnstileToken(token: string, ip: string): Promise<b
 
     return (
       data.success === true &&
-      data.action === EXPECTED_ACTION &&
+      data.action === expectedAction &&
       !!data.hostname &&
       allowedHostnames.has(data.hostname)
     );

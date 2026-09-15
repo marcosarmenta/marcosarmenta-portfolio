@@ -14,10 +14,10 @@ const SOCIAL_ICON_MAP = [
 
 const SITEMAP_LINKS = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/#about" },
+  { label: "About", href: "/about" },
   { label: "Projects", href: "/work" },
-  { label: "Services", href: "/#services" },
-  { label: "Contact", href: "/#contact" },
+  { label: "Services", href: "/services" },
+  { label: "Contact", href: "/contact" },
 ] as const;
 
 export function Footer({ siteSettings }: { siteSettings: SiteSettings | null }) {

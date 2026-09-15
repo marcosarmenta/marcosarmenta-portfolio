@@ -2,6 +2,9 @@
 
 import { Fragment, useMemo, useRef, type Ref } from "react";
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import type { TextRun } from "@/lib/bio";
+
+export type { TextRun };
 
 // Cubic ease-in-out — applied to each character's own slice of the scroll
 // range so the gray-to-black fill feels smooth rather than linear.
@@ -9,11 +12,6 @@ const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2
 
 const COLOR_START = "#9CA3AF";
 const COLOR_END = "#161616";
-
-export interface TextRun {
-  text: string;
-  bold?: boolean;
-}
 
 interface CharToken {
   char: string;

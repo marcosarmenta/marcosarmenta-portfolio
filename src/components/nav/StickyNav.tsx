@@ -8,7 +8,6 @@ import { ListIcon } from "@phosphor-icons/react/dist/csr/List";
 import { XIcon } from "@phosphor-icons/react/dist/csr/X";
 import { useAnchorScroll } from "@/lib/useAnchorScroll";
 import { MagneticButton } from "@/components/ui/MagneticButton";
-import { useBookingModal } from "@/components/booking/BookingModalProvider";
 
 type NavLink =
   | { label: string; kind: "home" }
@@ -17,22 +16,16 @@ type NavLink =
 
 const NAV_LINKS: NavLink[] = [
   { label: "Home", kind: "home" },
-  { label: "About", kind: "anchor", hash: "#about" },
+  { label: "About", kind: "route", href: "/about" },
   { label: "Projects", kind: "route", href: "/work" },
-  { label: "Services", kind: "anchor", hash: "#services" },
-  { label: "Contact", kind: "anchor", hash: "#contact" },
+  { label: "Services", kind: "route", href: "/services" },
+  { label: "Contact", kind: "route", href: "/contact" },
 ];
 
 export function StickyNav() {
   const pathname = usePathname();
   const { scrollToHash, scrollToTop } = useAnchorScroll();
   const [menuOpen, setMenuOpen] = useState(false);
-  const { open: openBookingModal } = useBookingModal();
-
-  const handleStartProject = () => {
-    setMenuOpen(false);
-    openBookingModal();
-  };
 
   const handleHomeClick = (e: MouseEvent) => {
     setMenuOpen(false);
@@ -106,8 +99,9 @@ export function StickyNav() {
           </nav>
 
           <MagneticButton
+            href="/start-a-project"
             variant="primary"
-            onClick={handleStartProject}
+            onClick={() => setMenuOpen(false)}
             className="hidden lg:inline-flex"
           >
             Start a Project
@@ -134,7 +128,12 @@ export function StickyNav() {
           </nav>
 
           <div className="mt-6 border-t border-border-subtle pt-6">
-            <MagneticButton variant="primary" onClick={handleStartProject} className="w-full">
+            <MagneticButton
+              href="/start-a-project"
+              variant="primary"
+              onClick={() => setMenuOpen(false)}
+              className="w-full"
+            >
               Start a Project
             </MagneticButton>
           </div>

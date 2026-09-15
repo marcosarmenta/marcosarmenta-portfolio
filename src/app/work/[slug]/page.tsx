@@ -174,10 +174,15 @@ export default async function CaseStudyPage({
 
         {/* Gallery */}
         {project.galleryImages && project.galleryImages.length > 0 && (
-          <Reveal className="mt-16 grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {project.galleryImages.map((image, i) => (
-              <ContentImage key={i} image={image} />
-            ))}
+          <Reveal className="mt-16 flex flex-col gap-6">
+            <p className="font-mono text-small uppercase tracking-wide text-text-secondary">
+              03 — Gallery
+            </p>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {project.galleryImages.map((image, i) => (
+                <ContentImage key={i} image={image} />
+              ))}
+            </div>
           </Reveal>
         )}
 

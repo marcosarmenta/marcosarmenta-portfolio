@@ -62,19 +62,20 @@ values below before testing the route.
    of these. Include `localhost` for local dev; use only the real production
    domain(s) in production.
 
-The route (`src/lib/turnstile.ts`) checks `success`, `action`, and `hostname`
-on the `siteverify` response, not just `success` — this stops a token minted
-on another site or for a different form from being replayed here. When the
-`/start-a-project` page is built, its widget markup must match what the
-server expects:
+`verifyTurnstileToken` (`src/lib/turnstile.ts`) checks `success`, `action`,
+and `hostname` on the `siteverify` response, not just `success` — this stops
+a token minted for one form from being replayed on another. Each form's
+widget `data-action` must match what its route passes as `expectedAction`:
+
+| Page | Route | `data-action` |
+| --- | --- | --- |
+| `/start-a-project` | `/api/inquiry` | `inquiry` |
+| `/contact` | `/api/contact` | `contact` |
 
 ```html
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <div class="cf-turnstile" data-sitekey="<NEXT_PUBLIC_TURNSTILE_SITE_KEY>" data-action="inquiry"></div>
 ```
-
-`data-action` must be exactly `"inquiry"` — it's checked server-side against
-`EXPECTED_ACTION` in `turnstile.ts`.
 
 ### Cal.com
 
